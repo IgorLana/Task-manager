@@ -2,7 +2,10 @@ package com.tarefas.model;
 
 public enum Status {
     PENDENTE("Pendente"),
-    CONCLUIDA("Concuída");
+    CONCLUIDA("Concuída"),
+    ADIADA("Adiado"),
+    EM_ANDAMENTO("Em andamento");
+
 
     private final String rotulo;
 
@@ -14,3 +17,5 @@ public enum Status {
         return rotulo;
     }
 }
+
+

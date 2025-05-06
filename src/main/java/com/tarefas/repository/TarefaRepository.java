@@ -1,6 +1,6 @@
 package com.tarefas.repository;
 
-import com.google.gson.Gson;                   // lib JSON
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.tarefas.model.Tarefa;               // model
 import org.slf4j.Logger;
@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Type;
 import java.nio.file.Files;                    // I/O moderno
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class TarefaRepository {
 
     Path ARQUIVO = Path.of(System.getProperty("user.home"), ".tarefas", "tasks.json");
 
-    private static final Gson gson = new Gson();
+
 
     private static final Type LIST_TYPE = new TypeToken<List<Tarefa>>(){}.getType();
 
@@ -37,6 +38,13 @@ public class TarefaRepository {
         }
         return new ArrayList<>();
     }
+
+    Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class,
+                    (JsonSerializer<LocalDate>) (d, t, ctx) -> new JsonPrimitive(d.toString()))
+            .registerTypeAdapter(LocalDate.class,
+                    (JsonDeserializer<LocalDate>) (json, t, ctx) -> LocalDate.parse(json.getAsString()))
+            .create();
 
 
     public void salvar(List<Tarefa> tarefas){

@@ -1,4 +1,6 @@
 package com.tarefas.service;
+import com.tarefas.model.Priority;
+import com.tarefas.model.Status;
 import com.tarefas.model.Tarefa;
 
 import com.tarefas.repository.TarefaRepository;
@@ -6,8 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Collections;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class TarefaService {
 
@@ -23,13 +29,14 @@ public class TarefaService {
 
 
 
-    public void adicionar(String descricao) {
+    public void adicionar(String descricao, LocalDate dueDate, Priority priority) {
         if (descricao.isEmpty()) {
             System.out.println("❌ Descrição não pode ser vazia.");
             log.warn("Usuário tentou adicionar tarefa sem descrição.");
             return;
         }
-        tarefas.add(new  Tarefa(descricao));
+
+        tarefas.add(new  Tarefa(descricao, dueDate, priority));
         System.out.println("Tarefa adiciona com sucesso!");
         log.info("Tarefa adicionada: {}", descricao);
     }
@@ -46,22 +53,68 @@ public class TarefaService {
             System.out.println("--- ---------------- ---");}
     }
 
-    public void concluirTarefa(int num) {
-        try {
-            int indice = num - 1;
-            if (indice < 0 || indice >= tarefas.size()) {
-                System.out.println("❌ Número inválido.");
-                //noinspection LoggingSimilarMessage
-                log.warn("Tentativa de concluir tarefa invalida: {}", num);
-                return;
-            }
-            tarefas.get(indice).marcarConcluida();
-            System.out.println("Tarefa nº: " + (indice + 1) + " concluida com sucesso!");
-            log.info("Tarefa concluida com sucesso!");
-        } catch (NumberFormatException e) {
-            System.out.println("❌ Entrada inválida. Digite um número.");
-            log.warn("Tentativa de concluir tarefa invalida: {}", num);
+
+
+
+    public void listarPorStatus(Status s) {
+        List<Tarefa> lista = tarefas.stream()
+                .filter(t -> t.getStatus() == s)
+                .collect(Collectors.toUnmodifiableList());
+        lista.forEach(System.out::println);
+    }
+
+    public void listarPorPrioridade(Priority p) {
+        List<Tarefa> lista = tarefas.stream()
+                .filter(t -> t.getPrioridade() == p)
+                .collect(Collectors.toUnmodifiableList());
+        lista.forEach(System.out::println);
+    }
+
+    private void validarIndice(int idx) {
+        if (idx < 0 || idx >= tarefas.size()) {
+            throw new IllegalArgumentException("Índice de tarefa inválido: " + (idx + 1));
         }
+    }
+
+
+    private boolean alterar(int num, Consumer<Tarefa> op, String logMsg) {
+        int idx = num - 1;
+        try {
+            validarIndice(idx);
+            op.accept(tarefas.get(idx));
+            System.out.println("Tarefa nº " + num + " alterada com sucesso!");
+            log.info(logMsg);
+            return true;
+        } catch (IllegalArgumentException ex) {
+            System.out.println("❌ " + ex.getMessage());
+            log.warn(ex.getMessage());
+            return false;
+        }
+    }
+
+    public boolean alterarPrioridade(int num, Priority newPriority) {
+        return alterar(
+                num,
+                t -> t.setPriority(newPriority),
+                "Prioridade alterada para " + newPriority
+        );
+    }
+
+    public boolean alterarDescricao(int num, String novaDescricao) {
+        return alterar(
+                num,
+                tarefa -> tarefa.setDescricao(novaDescricao),
+                "descrição alterada para" + novaDescricao
+        );
+    }
+
+    public boolean alterarStatus(int num, Status novoStatus) {
+    return alterar(
+            num,
+            t -> t.setStatus(novoStatus),
+            "Status alterado para " + novoStatus.getRotulo()
+    );
+
     }
     public void salvar() {
         repo.salvar(tarefas);
