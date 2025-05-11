@@ -1,31 +1,56 @@
 package com.tarefas.controller;
-import com.tarefas.model.Priority;
-import com.tarefas.model.Status;
-import com.tarefas.model.Tarefa;
-import com.tarefas.service.TarefaService;
+
+import com.tarefas.model.*;
+
+import com.tarefas.persistence.TarefaService;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Camada de orquestração – recebe pedidos da View
+ * e encaminha ao TarefaService.
+ */
+@Component          // vira bean Spring para injeção na View/CLI ou REST
 public class TarefaController {
 
-    private final TarefaService service = new TarefaService();
-    public  void adicionarTarefa(String descricao, LocalDate dueDate, Priority priority) {
-        service.adicionar(descricao, dueDate, priority);
-    }
-    public  void listarTarefas() {
-        service.listarTarefas();
-    }
-    public boolean alterarStatus(int num, Status novoStatus) {return service.alterarStatus(num, novoStatus);}
-    public boolean alterarPrioridade(int num, Priority newPriority) {return service.alterarPrioridade(num, newPriority);}
-    public boolean alterarDescricao(int num, String novaDescricao) {return service.alterarDescricao(num, novaDescricao);}
-    public List<Tarefa> listarPorStatus(Status s) {service.listarPorStatus(s);
-        return null;
-    }
-    public List<Tarefa> listarPorPrioridade(Priority p) {service.listarPorPrioridade(p);
-    return null;}
-    public void salvar() { service.salvar(); }
+    private final TarefaService service;
 
+    public TarefaController(TarefaService service) {
+        this.service = service;      // injeção via construtor
+    }
 
+    /* ---------- Ações de uso pela View CLI ---------- */
 
+    public void adicionarTarefa(String desc,
+                                Priority prio,
+                                LocalDate due) {
+        service.adicionar(desc, prio, due);
+    }
+
+    public List<Tarefa> listarTarefas() {
+        return service.listar();
+    }
+
+    public boolean alterarStatus(long id, Status novo) {
+        return service.alterarStatus(id, novo);
+    }
+
+    public boolean alterarPrioridade(long id, Priority nova) {
+        return service.alterarPrioridade(id, nova);
+    }
+
+    public boolean editarDescricao(long id, String novaDesc) {
+        return service.editarDescricao(id, novaDesc);
+    }
+
+    public boolean remover(long id) {
+        return service.remover(id);
+    }
+
+    /* ---------- Filtros (se a View precisar) ---------- */
+
+    public List<Tarefa> listarPorStatus(Status s)      { return service.listarPorStatus(s); }
+    public List<Tarefa> listarPorPriority(Priority p)  { return service.listarPorPriority(p); }
 }

@@ -7,14 +7,14 @@ public enum Status {
     EM_ANDAMENTO("Em andamento");
 
 
-    private final String rotulo;
+    private final String status;
 
-    Status(String rotulo) {
-        this.rotulo = rotulo;
+    Status(String status) {
+        this.status = status;
     }
 
-    public String getRotulo() {
-        return rotulo;
+    public String getStatus() {
+        return status;
     }
 }
 
