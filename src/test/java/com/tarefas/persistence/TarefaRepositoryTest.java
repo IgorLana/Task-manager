@@ -1,7 +1,9 @@
 package com.tarefas.persistence;
 
+import com.tarefas.entity.TarefaEntity;
 import com.tarefas.model.Priority;
 import com.tarefas.model.Status;
+import com.tarefas.repository.JpaTarefaRepository;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;

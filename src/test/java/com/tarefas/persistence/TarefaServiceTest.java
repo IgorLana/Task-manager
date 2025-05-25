@@ -1,9 +1,12 @@
 package com.tarefas.persistence;
 
 
+import com.tarefas.entity.TarefaEntity;
 import com.tarefas.model.Priority;
 import com.tarefas.model.Status;
 import com.tarefas.model.Tarefa;
+import com.tarefas.repository.JpaTarefaRepository;
+import com.tarefas.service.TarefaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

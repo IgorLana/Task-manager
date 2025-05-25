@@ -1,8 +1,10 @@
-package com.tarefas.persistence;
+package com.tarefas.service;
 
+import com.tarefas.entity.TarefaEntity;
 import com.tarefas.mapper.TarefaMapper;
 import com.tarefas.model.Priority;
 import com.tarefas.model.Tarefa;
+import com.tarefas.repository.JpaTarefaRepository;
 import jakarta.transaction.Transactional;
 
 import org.springframework.stereotype.Service;

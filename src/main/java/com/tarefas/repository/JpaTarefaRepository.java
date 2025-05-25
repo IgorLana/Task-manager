@@ -1,5 +1,6 @@
-package com.tarefas.persistence;
+package com.tarefas.repository;
 
+import com.tarefas.entity.TarefaEntity;
 import com.tarefas.model.Priority;
 import com.tarefas.model.Status;
 import org.springframework.data.jpa.repository.JpaRepository;

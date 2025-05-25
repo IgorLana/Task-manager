@@ -2,7 +2,7 @@ package com.tarefas.mapper;
 
 import com.tarefas.model.Tarefa;
 
-import com.tarefas.persistence.TarefaEntity;
+import com.tarefas.entity.TarefaEntity;
 
 public final class TarefaMapper {
     private TarefaMapper() {}

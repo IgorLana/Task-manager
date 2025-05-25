@@ -1,4 +1,4 @@
-package com.tarefas.persistence;
+package com.tarefas.entity;
 import com.tarefas.model.Priority;
 import com.tarefas.model.Status;
 import jakarta.persistence.*;

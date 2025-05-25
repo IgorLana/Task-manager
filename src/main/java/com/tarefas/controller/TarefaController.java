@@ -2,7 +2,7 @@ package com.tarefas.controller;
 
 import com.tarefas.model.*;
 
-import com.tarefas.persistence.TarefaService;
+import com.tarefas.service.TarefaService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
