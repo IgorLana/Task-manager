@@ -65,11 +65,11 @@ public class CliRunner implements CommandLineRunner {
         String desc = InputUtils.readNonEmpty(scanner, "Descrição: ");
         Priority prio = escolherPrioridade();
         LocalDate due = lerData();
-        controller.adicionarTarefa(desc, prio, due);
+
     }
 
     private void alterarStatus() {
-        List<Tarefa> lista = controller.listarTarefas();
+        List<ToDo> lista = controller.listarTarefas();
         listar(lista);
         long id = escolherId(lista);
         if (id == -1) return;
@@ -81,7 +81,7 @@ public class CliRunner implements CommandLineRunner {
     }
 
     private void alterarPrioridade() {
-        List<Tarefa> lista = controller.listarTarefas();
+        List<ToDo> lista = controller.listarTarefas();
         listar(lista);
         long id = escolherId(lista);
         if (id == -1) return;
@@ -93,7 +93,7 @@ public class CliRunner implements CommandLineRunner {
     }
 
     private void editarDescricao() {
-        List<Tarefa> lista = controller.listarTarefas();
+        List<ToDo> lista = controller.listarTarefas();
         listar(lista);
         long id = escolherId(lista);
         if (id == -1) return;
@@ -105,7 +105,7 @@ public class CliRunner implements CommandLineRunner {
     }
 
     private void remover() {
-        List<Tarefa> lista = controller.listarTarefas();
+        List<ToDo> lista = controller.listarTarefas();
         listar(lista);
         long id = escolherId(lista);
         if (id == -1) return;
@@ -118,7 +118,7 @@ public class CliRunner implements CommandLineRunner {
 
     /* -------------- Helpers UI -------------- */
 
-    private void listar(List<Tarefa> lista) {
+    private void listar(List<ToDo> lista) {
         if (lista.isEmpty()) {
             System.out.println("Nenhuma tarefa encontrada.");
             return;
@@ -129,7 +129,7 @@ public class CliRunner implements CommandLineRunner {
         }
     }
 
-    private long escolherId(List<Tarefa> lista) {
+    private long escolherId(List<ToDo> lista) {
         int idx = InputUtils.readInt(scanner, "Número da tarefa: ", -1) - 1;
         if (idx < 0 || idx >= lista.size()) {
             System.out.println("❌ Número inválido.");

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface JpaTarefaRepository
-    extends JpaRepository<TarefaEntity, Long>{
+    extends JpaRepository<TarefaEntity, Long>, TarefaRepositoryCustom{
 
     List<TarefaEntity> findByStatus(Status status);
     List<TarefaEntity> findByPriority(Priority priority);

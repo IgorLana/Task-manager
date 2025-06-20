@@ -1,6 +1,6 @@
 package com.tarefas.mapper;
 
-import com.tarefas.model.Tarefa;
+import com.tarefas.model.ToDo;
 
 import com.tarefas.entity.TarefaEntity;
 
@@ -8,8 +8,8 @@ public final class TarefaMapper {
     private TarefaMapper() {}
 
     // Entity → Model
-    public static Tarefa toModel(TarefaEntity e) {
-        return new Tarefa(
+    public static ToDo toModel(TarefaEntity e) {
+        return new ToDo(
                 e.getId(),// ajuste ao seu construtor
                 e.getDescricao(),
                 e.getStatus(),
@@ -18,7 +18,7 @@ public final class TarefaMapper {
     }
 
     // Model → Entity
-    public static TarefaEntity toEntity(Tarefa m) {
+    public static TarefaEntity toEntity(ToDo m) {
         return new TarefaEntity(
                 m.getId(),
                 m.getDescricao(),

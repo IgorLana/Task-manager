@@ -1,5 +1,6 @@
 package com.tarefas.controller;
 
+import com.tarefas.entity.UsuarioEntity;
 import com.tarefas.model.*;
 
 import com.tarefas.service.TarefaService;
@@ -8,11 +9,8 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.List;
 
-/**
- * Camada de orquestração – recebe pedidos da View
- * e encaminha ao TarefaService.
- */
-@Component          // vira bean Spring para injeção na View/CLI ou REST
+
+@Component
 public class TarefaController {
 
     private final TarefaService service;
@@ -21,15 +19,16 @@ public class TarefaController {
         this.service = service;      // injeção via construtor
     }
 
-    /* ---------- Ações de uso pela View CLI ---------- */
+
 
     public void adicionarTarefa(String desc,
                                 Priority prio,
-                                LocalDate due) {
-        service.adicionar(desc, prio, due);
+                                LocalDate due,
+                                UsuarioEntity usuario) {
+        service.adicionar(desc, prio, due, usuario);
     }
 
-    public List<Tarefa> listarTarefas() {
+    public List<ToDo> listarTarefas() {
         return service.listar();
     }
 
@@ -49,8 +48,7 @@ public class TarefaController {
         return service.remover(id);
     }
 
-    /* ---------- Filtros (se a View precisar) ---------- */
 
-    public List<Tarefa> listarPorStatus(Status s)      { return service.listarPorStatus(s); }
-    public List<Tarefa> listarPorPriority(Priority p)  { return service.listarPorPriority(p); }
+    public List<ToDo> listarPorStatus(Status s)      { return service.listarPorStatus(s); }
+    public List<ToDo> listarPorPriority(Priority p)  { return service.listarPorPriority(p); }
 }

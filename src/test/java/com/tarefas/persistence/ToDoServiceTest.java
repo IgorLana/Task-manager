@@ -2,9 +2,10 @@ package com.tarefas.persistence;
 
 
 import com.tarefas.entity.TarefaEntity;
+import com.tarefas.entity.UsuarioEntity;
 import com.tarefas.model.Priority;
 import com.tarefas.model.Status;
-import com.tarefas.model.Tarefa;
+import com.tarefas.model.ToDo;
 import com.tarefas.repository.JpaTarefaRepository;
 import com.tarefas.service.TarefaService;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +26,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class TarefaServiceTest {
+public class ToDoServiceTest {
 
     @Mock
     private JpaTarefaRepository repo;
@@ -50,7 +51,7 @@ public class TarefaServiceTest {
 
         when(repo.findByStatus(Status.CONCLUIDA)).thenReturn(List.of(tarefaEntity));
 
-        List<Tarefa> resultado = service.listarPorStatus(Status.CONCLUIDA);
+        List<ToDo> resultado = service.listarPorStatus(Status.CONCLUIDA);
 
         assertThat(resultado).hasSize(1);
         assertThat(resultado.get(0).getDescricao()).isEqualTo("Tarefa concluida");
@@ -68,7 +69,7 @@ public class TarefaServiceTest {
         Priority prioridade = Priority.MEDIUM;
         LocalDate vencimento = LocalDate.of(2025,5,20);
 
-        service.adicionar(descricao, prioridade, vencimento);
+        service.adicionar(descricao, prioridade, vencimento, new UsuarioEntity());
 
         ArgumentCaptor<TarefaEntity> captor = ArgumentCaptor.forClass(TarefaEntity.class);
         verify(repo).save(captor.capture());

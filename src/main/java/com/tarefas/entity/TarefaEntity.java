@@ -1,6 +1,7 @@
 package com.tarefas.entity;
 import com.tarefas.model.Priority;
 import com.tarefas.model.Status;
+import com.tarefas.service.UsuarioService;
 import jakarta.persistence.*;
 
 
@@ -17,6 +18,8 @@ public class TarefaEntity {
     @Column(nullable = false)
     private String descricao;
 
+
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -24,6 +27,11 @@ public class TarefaEntity {
     private Priority priority;
 
     private LocalDate dueDate;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private UsuarioEntity usuario;
+
 
     public TarefaEntity() {}
 
@@ -52,6 +60,13 @@ public class TarefaEntity {
     public void setDueDate(LocalDate newDueDate){this.dueDate = newDueDate;}
 
 
+    public void setUsuario(UsuarioEntity usuario) {
+        this.usuario = usuario;
+    }
+
+    public UsuarioEntity getUsuario() {
+        return usuario;
+    }
 }
 
 

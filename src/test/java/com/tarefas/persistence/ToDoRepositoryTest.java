@@ -16,7 +16,7 @@ import org.junit.jupiter.api.DisplayName;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @DataJpaTest
-public class TarefaRepositoryTest {
+public class ToDoRepositoryTest {
 
     @Autowired
     private JpaTarefaRepository repo;

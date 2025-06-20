@@ -2,7 +2,7 @@ package com.tarefas.model;
 
 import java.time.LocalDate;
 
-public class Tarefa {
+public class ToDo {
 
     private Long id;
     private String descricao;
@@ -17,7 +17,7 @@ public class Tarefa {
 
 
 
-    public Tarefa(Long id, String descricao, Status status, LocalDate dueDate, Priority priority) {
+    public ToDo(Long id, String descricao, Status status, LocalDate dueDate, Priority priority) {
         this.id = id;
         this.descricao = descricao;
         this.status = status;
@@ -37,4 +37,16 @@ public class Tarefa {
 
     public Priority getPriority() {
     return priority;}
+
+    public void setPriority(Priority newPriority) {
+        this.priority = newPriority;
+    }
+
+    public void setDescricao(String novaDesc) {
+        this.descricao = novaDesc;
+    }
+
+    public void setStatus(Status novo) {
+        this.status = novo;
+    }
 }
