@@ -1,41 +1,39 @@
 package com.tarefas.entity;
 import com.tarefas.model.Priority;
 import com.tarefas.model.Status;
-import com.tarefas.service.UsuarioService;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "tarefas")
+@Document(collection = "task")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class TarefaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String  id;
 
-    @Column(nullable = false)
     private String descricao;
 
 
-
-    @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Enumerated(EnumType.STRING)
     private Priority priority;
 
     private LocalDate dueDate;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private UsuarioEntity usuario;
+    @DBRef
+    private UsuarioEntity user;
 
 
-    public TarefaEntity() {}
-
-    public TarefaEntity(Long id, String descricao, Status status,
+    public TarefaEntity(String id, String descricao, Status status,
                         Priority priority, LocalDate dueDate) {
 
         this.id = id;
@@ -46,27 +44,6 @@ public class TarefaEntity {
 
     }
 
-    public Long getId() { return id; }
-    public String getDescricao(){return descricao;}
-    public void setDescricao(String novaDescricao){this.descricao = novaDescricao;}
-
-    public Status getStatus(){return status;}
-    public void setStatus(Status novoStatus){ this.status = novoStatus;}
-
-    public Priority getPriority(){return priority;}
-    public void setPriority(Priority newPriority){this.priority = newPriority;}
-
-    public LocalDate getDueDate(){return dueDate;}
-    public void setDueDate(LocalDate newDueDate){this.dueDate = newDueDate;}
-
-
-    public void setUsuario(UsuarioEntity usuario) {
-        this.usuario = usuario;
-    }
-
-    public UsuarioEntity getUsuario() {
-        return usuario;
-    }
 }
 
 

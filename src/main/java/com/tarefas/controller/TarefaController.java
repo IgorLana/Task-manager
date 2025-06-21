@@ -32,19 +32,19 @@ public class TarefaController {
         return service.listar();
     }
 
-    public boolean alterarStatus(long id, Status novo) {
+    public boolean alterarStatus(String id, Status novo) {
         return service.alterarStatus(id, novo);
     }
 
-    public boolean alterarPrioridade(long id, Priority nova) {
+    public boolean alterarPrioridade(String id, Priority nova) {
         return service.alterarPrioridade(id, nova);
     }
 
-    public boolean editarDescricao(long id, String novaDesc) {
+    public boolean editarDescricao(String id, String novaDesc) {
         return service.editarDescricao(id, novaDesc);
     }
 
-    public boolean remover(long id) {
+    public boolean remover(String id) {
         return service.remover(id);
     }
 

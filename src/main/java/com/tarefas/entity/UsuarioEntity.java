@@ -1,55 +1,33 @@
 package com.tarefas.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 
-@Entity
-@Table(name = "usuarios23")
+@Document(collection = "users")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UsuarioEntity implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String  id;
 
-    @Column(nullable = false, unique = true)
+
     private String username;
 
     private String nome;
 
-    @Column(nullable = false)
     private String senha;
 
     private String role;
-
-    public UsuarioEntity() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setNome(String nome) {}
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
 
     @Override
@@ -59,10 +37,6 @@ public class UsuarioEntity implements UserDetails {
 
     public String getPassword() {
         return senha;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public boolean isAccountNonExpired() {

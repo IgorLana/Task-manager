@@ -6,7 +6,7 @@ import com.tarefas.model.Status;
 import java.time.LocalDate;
 
 public record TarefaResponseDTO(
-        Long id,
+        String  id,
         String descricao,
         Status status,
         Priority prioridade,

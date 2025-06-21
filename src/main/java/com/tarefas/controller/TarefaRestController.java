@@ -62,32 +62,32 @@ public class TarefaRestController {
 
 
     @PutMapping("/{id}/status")
-    public ResponseEntity<Void> alterarStatus(@PathVariable("id") Long id, @RequestParam("status") Status status){
+    public ResponseEntity<Void> alterarStatus(@PathVariable("id") String  id, @RequestParam("status") Status status){
         boolean ok = service.alterarStatus(id, status);
         return ok ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}/priority")
-    public ResponseEntity<Void> alterarPrioridade(@PathVariable("id") Long id, @RequestParam("priority") Priority priority){
+    public ResponseEntity<Void> alterarPrioridade(@PathVariable("id") String  id, @RequestParam("priority") Priority priority){
         boolean ok = service.alterarPrioridade(id, priority);
         return ok ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}/descricao")
-    public ResponseEntity<Void> alterarDescricao(@PathVariable("id") Long id, @RequestParam("descricao") String descricao){
+    public ResponseEntity<Void> alterarDescricao(@PathVariable("id") String  id, @RequestParam("descricao") String descricao){
         boolean ok = service.editarDescricao(id, descricao);
         return ok ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
 
     @PutMapping("/{id}/duedate")
-    public ResponseEntity<Void> alterarDueDate(@PathVariable("id") Long id, @RequestParam("dueDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dueDate){
+    public ResponseEntity<Void> alterarDueDate(@PathVariable("id") String  id, @RequestParam("dueDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dueDate){
         boolean ok = service.alterarDueDate(id, dueDate); // Você precisará criar este método no seu TarefaService do backend
         return ok ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> remover(@PathVariable("id") Long id){
+    public ResponseEntity<Void> remover(@PathVariable("id") String  id){
         boolean ok = service.remover(id);
         return ok ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }

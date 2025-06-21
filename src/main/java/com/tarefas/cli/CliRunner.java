@@ -69,51 +69,19 @@ public class CliRunner implements CommandLineRunner {
     }
 
     private void alterarStatus() {
-        List<ToDo> lista = controller.listarTarefas();
-        listar(lista);
-        long id = escolherId(lista);
-        if (id == -1) return;
-        Status novo = escolherStatus();
-        if (controller.alterarStatus(id, novo))
-            System.out.println("✅ Status alterado!");
-        else
-            System.out.println("❌ Falha ao alterar.");
+
     }
 
     private void alterarPrioridade() {
-        List<ToDo> lista = controller.listarTarefas();
-        listar(lista);
-        long id = escolherId(lista);
-        if (id == -1) return;
-        Priority nova = escolherPrioridade();
-        if (controller.alterarPrioridade(id, nova))
-            System.out.println("✅ Prioridade alterada!");
-        else
-            System.out.println("❌ Falha ao alterar.");
+
     }
 
     private void editarDescricao() {
-        List<ToDo> lista = controller.listarTarefas();
-        listar(lista);
-        long id = escolherId(lista);
-        if (id == -1) return;
-        String nova = InputUtils.readNonEmpty(scanner, "Nova descrição: ");
-        if (controller.editarDescricao(id, nova))
-            System.out.println("✅ Descrição atualizada!");
-        else
-            System.out.println("❌ Falha ao editar.");
+
     }
 
     private void remover() {
-        List<ToDo> lista = controller.listarTarefas();
-        listar(lista);
-        long id = escolherId(lista);
-        if (id == -1) return;
-        String conf = InputUtils.readNonEmpty(scanner, "Confirma remoção? (s/n): ");
-        if (conf.equalsIgnoreCase("s") && controller.remover(id))
-            System.out.println("✅ Removida!");
-        else
-            System.out.println("❌ Ação cancelada.");
+
     }
 
     /* -------------- Helpers UI -------------- */
@@ -129,14 +97,7 @@ public class CliRunner implements CommandLineRunner {
         }
     }
 
-    private long escolherId(List<ToDo> lista) {
-        int idx = InputUtils.readInt(scanner, "Número da tarefa: ", -1) - 1;
-        if (idx < 0 || idx >= lista.size()) {
-            System.out.println("❌ Número inválido.");
-            return -1;
-        }
-        return lista.get(idx).getId();
-    }
+
 
     private Priority escolherPrioridade() {
         int op = InputUtils.readInt(scanner, "1-Baixa 2-Média 3-Alta: ", -1);

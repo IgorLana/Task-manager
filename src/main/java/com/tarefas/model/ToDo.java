@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class ToDo {
 
-    private Long id;
+    private String  id;
     private String descricao;
     private Status status;
     private Priority priority;
@@ -17,7 +17,7 @@ public class ToDo {
 
 
 
-    public ToDo(Long id, String descricao, Status status, LocalDate dueDate, Priority priority) {
+    public ToDo(String id, String descricao, Status status, LocalDate dueDate, Priority priority) {
         this.id = id;
         this.descricao = descricao;
         this.status = status;
@@ -25,7 +25,7 @@ public class ToDo {
         this.dueDate = dueDate;
     }
 
-    public Long getId() { return id; }
+    public String  getId() { return id; }
     public LocalDate getDueDate() { return dueDate; }
 
 

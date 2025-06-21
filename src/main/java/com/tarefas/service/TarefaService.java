@@ -4,9 +4,9 @@ import com.tarefas.entity.TarefaEntity;
 import com.tarefas.entity.UsuarioEntity;
 import com.tarefas.model.Priority;
 import com.tarefas.model.ToDo;
-import com.tarefas.repository.JpaTarefaRepository;
+import com.tarefas.repository.TarefaRepository;
 import com.tarefas.repository.UsuarioRepository;
-import jakarta.transaction.Transactional;
+
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,15 +17,15 @@ import com.tarefas.model.Status;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
-@Transactional
 public class TarefaService {
 
-    private final JpaTarefaRepository repo;
+    private final TarefaRepository repo;
     private final UsuarioRepository usuarioRepository;
-    public TarefaService(JpaTarefaRepository repo, UsuarioRepository usuarioRepository) {
+    public TarefaService(TarefaRepository repo, UsuarioRepository usuarioRepository) {
         this.repo = repo;
         this.usuarioRepository = usuarioRepository;
 
@@ -34,25 +34,30 @@ public class TarefaService {
 
     public void adicionar(String desc, Priority prio, LocalDate dueDate, UsuarioEntity usuario) {
         TarefaEntity entity = new TarefaEntity(null, desc, Status.PENDENTE, prio, dueDate);
-        entity.setUsuario(usuario); // associa a tarefa ao usuário logado
+        entity.setUser(usuario); // associa a tarefa ao usuário logado
         repo.save(entity);
     }
 
     private ToDo toModel(TarefaEntity e) {
-        return new ToDo(null, e.getDescricao(),e.getStatus(), e.getDueDate(), e.getPriority());
+        return new ToDo(e.getId(), e.getDescricao(),e.getStatus(), e.getDueDate(), e.getPriority());
 
     }
 
     public List<ToDo> listar() {
-        return repo.findAllByUsuarioLogado();
+        UsuarioEntity usuario = getUsuarioLogado();
+        // Agora chamamos o método findByUser diretamente do TarefaRepository
+        return repo.findByUser(usuario).stream()
+                .map(this::toModel)
+                .collect(Collectors.toList());
     }
-    public boolean alterarStatus(Long id, Status novo) {
+
+    public boolean alterarStatus(String id, Status novo) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UsuarioEntity usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
         return repo.findById(id).map(ent -> {
-            if (!ent.getUsuario().getId().equals(usuario.getId())) {
+            if (!ent.getUser().getId().equals(usuario.getId())) {
                 throw new AccessDeniedException("Você não tem permissão para alterar essa tarefa");
             }
             ent.setStatus(novo);
@@ -61,20 +66,26 @@ public class TarefaService {
     }
 
     public List<ToDo> listarPorStatus(Status s) {
-        return repo.findAllByStatusAndUsuarioLogado(s);
+        UsuarioEntity usuario = getUsuarioLogado();
+        return repo.findByStatusAndUser(s, usuario).stream() // Usando findByStatusAndUser
+                .map(this::toModel)
+                .collect(Collectors.toList());
     }
 
     public List<ToDo> listarPorPriority(Priority p) {
-        return repo.findAllByPriorityAndUsuarioLogado(p);
+        UsuarioEntity usuario = getUsuarioLogado();
+        return repo.findByPriorityAndUser(p, usuario).stream() // Usando findByPriorityAndUser
+                .map(this::toModel)
+                .collect(Collectors.toList());
     }
 
-    public boolean alterarPrioridade(long id, Priority newPriority) {
+    public boolean alterarPrioridade(String id, Priority newPriority) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UsuarioEntity usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
         return repo.findById(id).map(ent -> {
-            if (!ent.getUsuario().getId().equals(usuario.getId())) {
+            if (!ent.getUser().getId().equals(usuario.getId())) {
                 throw new AccessDeniedException("Você não tem permissão para alterar essa tarefa");
             }
             ent.setPriority(newPriority);
@@ -85,13 +96,13 @@ public class TarefaService {
 
 
 
-    public boolean editarDescricao(long id, String novaDesc) {
+    public boolean editarDescricao(String id, String novaDesc) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UsuarioEntity usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
         return repo.findById(id).map(ent -> {
-            if (!ent.getUsuario().getId().equals(usuario.getId())) {
+            if (!ent.getUser().getId().equals(usuario.getId())) {
                 throw new AccessDeniedException("Você não tem permissão para alterar essa tarefa");
             }
             ent.setDescricao(novaDesc);
@@ -100,13 +111,13 @@ public class TarefaService {
 
     }
 
-    public boolean remover(long id) {
+    public boolean remover(String  id) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UsuarioEntity usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
         return repo.findById(id).map(ent -> {
-            if (!ent.getUsuario().getId().equals(usuario.getId())) {
+            if (!ent.getUser().getId().equals(usuario.getId())) {
                 throw new AccessDeniedException("Você não tem permissão para alterar essa tarefa");
             }
             repo.deleteById(id);
@@ -114,19 +125,23 @@ public class TarefaService {
         }).orElse(false);
     }
 
-    public boolean alterarDueDate(Long id, LocalDate dueDate) {
+    public boolean alterarDueDate(String id, LocalDate dueDate) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UsuarioEntity usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
         return repo.findById(id).map(ent -> {
-            if (!ent.getUsuario().getId().equals(usuario.getId())) {
+            if (!ent.getUser().getId().equals(usuario.getId())) {
                 throw new AccessDeniedException("Você não tem permissão para alterar essa tarefa");
             }
             ent.setDueDate(dueDate);
             return true;
         }).orElse(false);
+    }
 
-
+    private UsuarioEntity getUsuarioLogado() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return usuarioRepository.findByUsername(username) // Assumindo que findByUsername agora é findByEmail
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
     }
 }
