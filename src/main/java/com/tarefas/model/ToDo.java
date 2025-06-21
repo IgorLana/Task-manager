@@ -38,15 +38,4 @@ public class ToDo {
     public Priority getPriority() {
     return priority;}
 
-    public void setPriority(Priority newPriority) {
-        this.priority = newPriority;
-    }
-
-    public void setDescricao(String novaDesc) {
-        this.descricao = novaDesc;
-    }
-
-    public void setStatus(Status novo) {
-        this.status = novo;
-    }
 }
