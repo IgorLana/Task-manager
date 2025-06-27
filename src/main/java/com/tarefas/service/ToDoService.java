@@ -1,10 +1,9 @@
 package com.tarefas.service;
 
-import com.tarefas.entity.TarefaEntity;
+import com.tarefas.entity.ToDoEntity;
 import com.tarefas.entity.UsuarioEntity;
-import com.tarefas.model.Priority;
-import com.tarefas.model.ToDo;
-import com.tarefas.repository.TarefaRepository;
+import com.tarefas.model.*;
+import com.tarefas.repository.ToDoRepository;
 import com.tarefas.repository.UsuarioRepository;
 
 
@@ -13,39 +12,34 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.tarefas.model.Status;
-
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 
 @Service
-public class TarefaService {
+public class ToDoService {
 
-    private final TarefaRepository repo;
+    private final ToDoRepository repo;
     private final UsuarioRepository usuarioRepository;
-    public TarefaService(TarefaRepository repo, UsuarioRepository usuarioRepository) {
+    public ToDoService(ToDoRepository repo, UsuarioRepository usuarioRepository) {
         this.repo = repo;
         this.usuarioRepository = usuarioRepository;
-
-
     }
 
     public void adicionar(String desc, Priority prio, LocalDate dueDate, UsuarioEntity usuario) {
-        TarefaEntity entity = new TarefaEntity(null, desc, Status.PENDENTE, prio, dueDate);
+        ToDoEntity entity = new ToDoEntity(null, desc, Status.PENDENTE, prio, dueDate, CardType.TODO);
         entity.setUser(usuario); // associa a tarefa ao usuário logado
         repo.save(entity);
     }
 
-    private ToDo toModel(TarefaEntity e) {
+    private ToDo toModel(ToDoEntity e) {
         return new ToDo(e.getId(), e.getDescricao(),e.getStatus(), e.getDueDate(), e.getPriority());
 
     }
 
     public List<ToDo> listar() {
         UsuarioEntity usuario = getUsuarioLogado();
-        // Agora chamamos o método findByUser diretamente do TarefaRepository
         return repo.findByUser(usuario).stream()
                 .map(this::toModel)
                 .collect(Collectors.toList());
@@ -89,6 +83,7 @@ public class TarefaService {
                 throw new AccessDeniedException("Você não tem permissão para alterar essa tarefa");
             }
             ent.setPriority(newPriority);
+            repo.save(ent);
             return true;
         }).orElse(false);
 
@@ -137,6 +132,25 @@ public class TarefaService {
             ent.setDueDate(dueDate);
             return true;
         }).orElse(false);
+    }
+
+
+    public void updateTask(String id, Priority priority, String descricao, LocalDate dueDate, Status status) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UsuarioEntity usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+
+        repo.findById(id).map(ent -> {
+            if (!ent.getUser().getId().equals(usuario.getId())) {
+                throw new AccessDeniedException("Você não tem permissão para alterar essa tarefa");
+            }
+            ent.setDescricao(descricao);
+            ent.setPriority(priority);
+            ent.setDueDate(dueDate);
+            ent.setStatus(status);
+            repo.save(ent);// Atualiza o checklist completo
+            return true;
+        });
     }
 
     private UsuarioEntity getUsuarioLogado() {

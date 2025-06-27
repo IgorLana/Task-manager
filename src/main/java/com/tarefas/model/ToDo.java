@@ -1,41 +1,21 @@
 package com.tarefas.model;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
-public class ToDo {
+@EqualsAndHashCode(callSuper = true)
+@Data
+@NoArgsConstructor
+public class ToDo extends BaseItem{
 
-    private String  id;
-    private String descricao;
     private Status status;
-    private Priority priority;
-    private LocalDate dueDate;
-
-    @Override
-    public String toString() {
-        return "Tarefa: " + descricao + " || Status: [" + status.getStatus() + "]" + " || Prioridade: " + priority.getPriority() + " || Vence em: " + dueDate + "\n";
-    }
-
-
 
     public ToDo(String id, String descricao, Status status, LocalDate dueDate, Priority priority) {
-        this.id = id;
-        this.descricao = descricao;
+        super(id, priority, descricao, dueDate);
         this.status = status;
-        this.priority = priority;
-        this.dueDate = dueDate;
+
     }
-
-    public String  getId() { return id; }
-    public LocalDate getDueDate() { return dueDate; }
-
-
-    public Status getStatus()       { return status; }
-    public String getDescricao()    { return descricao; }
-
-
-
-
-    public Priority getPriority() {
-    return priority;}
-
 }
