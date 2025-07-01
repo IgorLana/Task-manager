@@ -44,7 +44,7 @@ public class TaskRestController {
     @GetMapping
     public List<TaskResponseDTO> listarTodas(){
         return  service.listarTask().stream()
-                .map(t -> new TaskResponseDTO(t.getId(),t.getDescricao(), t.getPriority(), t.getTitle(), t.getPdca(), t.getChecklist(), t.getDueDate()))
+                .map(t -> new TaskResponseDTO(t.getId(),t.getDescricao(), t.getPriority(), t.getTitle(), t.getPdca(), t.getChecklist(), t.getDueDate(), t.getCardType()))
                 .toList();
     }
 

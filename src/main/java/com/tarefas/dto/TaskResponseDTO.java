@@ -1,5 +1,6 @@
 package com.tarefas.dto;
 
+import com.tarefas.model.CardType;
 import com.tarefas.model.ChecklistItem;
 import com.tarefas.model.Pdca;
 import com.tarefas.model.Priority;
@@ -14,6 +15,7 @@ public record TaskResponseDTO(
         String title,
         Pdca pdca,
         List<ChecklistItem> checklist,
-        LocalDate dueDate
+        LocalDate dueDate,
+        CardType cardType
 ) {
 }

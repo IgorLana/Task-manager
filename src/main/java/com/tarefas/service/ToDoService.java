@@ -34,7 +34,7 @@ public class ToDoService {
     }
 
     private ToDo toModel(ToDoEntity e) {
-        return new ToDo(e.getId(), e.getDescricao(),e.getStatus(), e.getDueDate(), e.getPriority());
+        return new ToDo(e.getId(), e.getDescricao(),e.getStatus(), e.getDueDate(), e.getPriority(), e.getCardType());
 
     }
 
@@ -42,6 +42,7 @@ public class ToDoService {
         UsuarioEntity usuario = getUsuarioLogado();
         return repo.findByUser(usuario).stream()
                 .map(this::toModel)
+                .filter(todo -> todo.getCardType() == CardType.TODO)
                 .collect(Collectors.toList());
     }
 

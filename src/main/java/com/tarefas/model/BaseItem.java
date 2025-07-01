@@ -16,12 +16,14 @@ public abstract  class BaseItem {
     private Priority priority;
     private String descricao;
     private LocalDate dueDate;
+    private CardType cardType;
 
-    public BaseItem(String id, Priority priority, String descricao, LocalDate dueDate) {
+    public BaseItem(String id, Priority priority, String descricao, LocalDate dueDate, CardType cardType) {
         this.id = id;
         this.priority = priority;
         this.descricao = descricao;
         this.dueDate = dueDate;
+        this.cardType = cardType;
     }
 
 }

@@ -31,21 +31,21 @@ public class ToDoRestController {
     @GetMapping
     public List<ToDoResponseDTO> listarTodas(){
         return  service.listar().stream()
-                .map(t -> new ToDoResponseDTO(t.getId(), t.getDescricao(), t.getStatus(), t.getPriority(), t.getDueDate()))
+                .map(t -> new ToDoResponseDTO(t.getId(), t.getDescricao(), t.getStatus(), t.getPriority(), t.getDueDate(), t.getCardType()))
                 .toList();
     }
 
     @GetMapping("/status/{status}")
     public List<ToDoResponseDTO> listarPorStatus(@PathVariable("status") Status status ){
         return service.listarPorStatus(status).stream()
-                .map(t -> new ToDoResponseDTO(t.getId(), t.getDescricao(), t.getStatus(), t.getPriority(), t.getDueDate()))
+                .map(t -> new ToDoResponseDTO(t.getId(), t.getDescricao(), t.getStatus(), t.getPriority(), t.getDueDate(), t.getCardType()))
                 .toList();
     }
 
     @GetMapping("/priority/{priority}")
     public List<ToDoResponseDTO> listarPorPriority(@PathVariable("priority") Priority priority ){
         return service.listarPorPriority(priority).stream()
-                .map(t -> new ToDoResponseDTO(t.getId(), t.getDescricao(), t.getStatus(), t.getPriority(), t.getDueDate()))
+                .map(t -> new ToDoResponseDTO(t.getId(), t.getDescricao(), t.getStatus(), t.getPriority(), t.getDueDate(), t.getCardType()))
                 .toList();
     }
 

@@ -13,8 +13,8 @@ public class ToDo extends BaseItem{
 
     private Status status;
 
-    public ToDo(String id, String descricao, Status status, LocalDate dueDate, Priority priority) {
-        super(id, priority, descricao, dueDate);
+    public ToDo(String id, String descricao, Status status, LocalDate dueDate, Priority priority, CardType cardType) {
+        super(id, priority, descricao, dueDate, cardType);
         this.status = status;
 
     }

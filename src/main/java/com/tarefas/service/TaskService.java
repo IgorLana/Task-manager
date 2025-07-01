@@ -66,13 +66,14 @@ public class TaskService {
     
 
     private Task toModel(TaskEntity e) {
-        return new Task(e.getId(), e.getPriority(), e.getDescricao(), e.getDueDate(), e.getTitle(), e.getPdca(), e.getChecklist());
+        return new Task(e.getId(), e.getPriority(), e.getDescricao(), e.getDueDate(), e.getTitle(), e.getPdca(), e.getChecklist(), e.getCardType());
     }
 
     public List<Task> listarTask() {
         UsuarioEntity usuario = getUsuarioLogado();
         return taskRepository.findByUser(usuario).stream()
                 .map(this::toModel)
+                .filter(task -> task.getCardType().equals(CardType.TASK))
                 .collect(Collectors.toList());
     }
 

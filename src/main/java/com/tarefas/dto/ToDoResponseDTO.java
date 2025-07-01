@@ -1,5 +1,6 @@
 package com.tarefas.dto;
 
+import com.tarefas.model.CardType;
 import com.tarefas.model.Priority;
 import com.tarefas.model.Status;
 
@@ -9,7 +10,8 @@ public record ToDoResponseDTO(
         String  id,
         String descricao,
         Status status,
-        Priority prioridade,
-        LocalDate dueDate
+        Priority priority,
+        LocalDate dueDate,
+        CardType cardType
 ) {
 }
