@@ -63,12 +63,6 @@ O projeto possui recursos para:
 
 ---
 
-## Demonstração ou preview
-
-[Adicionar demonstração ou preview]
-
----
-
 ## Principais funcionalidades
 
 - Autenticação de usuários com JWT.
